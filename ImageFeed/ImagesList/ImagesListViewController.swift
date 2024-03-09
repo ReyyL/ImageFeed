@@ -7,15 +7,15 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)"}
+    private let photoDate: Date = .init()
 
     @IBOutlet private var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
@@ -29,12 +29,9 @@ class ImagesListViewController: UIViewController {
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let imageFromArray = UIImage(named: photosName[indexPath.row]) else { return 200}
+        guard let imageFromArray = UIImage(named: photosName[indexPath.row]) else { return 0 }
         
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
@@ -68,7 +65,7 @@ extension ImagesListViewController {
         
         cell.cellImage.image = imageFromArray
        
-        cell.dateLabel.text = dateFormatter.string(from: NSDate() as Date)
+        cell.dateLabel.text = dateFormatter.string(from: photoDate)
         
         cell.likeButton.imageView?.image = indexPath.row % 2 == 0
         ? UIImage(named: "like_button_on")
