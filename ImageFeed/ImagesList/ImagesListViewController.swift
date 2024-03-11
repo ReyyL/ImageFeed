@@ -11,7 +11,7 @@ final class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)"}
     private let photoDate: Date = .init()
-
+    
     @IBOutlet private var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -70,6 +70,6 @@ extension ImagesListViewController {
         cell.likeButton.imageView?.image = indexPath.row % 2 == 0
         ? UIImage(named: "like_button_on")
         : UIImage(named: "like_button_off")
-        }
+    }
 }
 

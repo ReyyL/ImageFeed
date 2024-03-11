@@ -43,8 +43,19 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="like_button_off"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="27 Августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biW-RQ-5Wj" userLabel="Date Label">
-                                                    <rect key="frame" x="20" y="173" width="103" height="16"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zmD-Mi-aIa" userLabel="Gradient" customClass="GradientView" customModule="ImageFeed" customModuleProvider="target">
+                                                    <rect key="frame" x="16" y="168" width="382" height="28"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                                            <color key="value" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                                            <color key="value" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 Августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biW-RQ-5Wj" userLabel="Date Label">
+                                                    <rect key="frame" x="24" y="172" width="103" height="16"/>
                                                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -54,10 +65,14 @@
                                             <constraints>
                                                 <constraint firstItem="06p-5K-WkF" firstAttribute="leading" secondItem="zIC-tn-mo5" secondAttribute="leading" constant="16" id="07R-0P-yLw"/>
                                                 <constraint firstItem="biW-RQ-5Wj" firstAttribute="leading" secondItem="06p-5K-WkF" secondAttribute="leading" constant="8" id="5hz-cm-1z4"/>
+                                                <constraint firstItem="zmD-Mi-aIa" firstAttribute="leading" secondItem="06p-5K-WkF" secondAttribute="leading" id="88k-9s-9AH"/>
+                                                <constraint firstItem="biW-RQ-5Wj" firstAttribute="top" secondItem="zmD-Mi-aIa" secondAttribute="top" constant="4" id="9lK-GX-c8q"/>
                                                 <constraint firstItem="Q3o-1l-wTt" firstAttribute="top" secondItem="06p-5K-WkF" secondAttribute="top" id="IBw-8t-44l"/>
+                                                <constraint firstItem="zmD-Mi-aIa" firstAttribute="trailing" secondItem="06p-5K-WkF" secondAttribute="trailing" id="LlR-JE-6pk"/>
                                                 <constraint firstItem="06p-5K-WkF" firstAttribute="top" secondItem="zIC-tn-mo5" secondAttribute="top" constant="4" id="NOs-5x-Ujc"/>
                                                 <constraint firstAttribute="trailing" secondItem="06p-5K-WkF" secondAttribute="trailing" constant="16" id="OHd-a5-Bxj"/>
                                                 <constraint firstAttribute="bottom" secondItem="06p-5K-WkF" secondAttribute="bottom" constant="4" id="Ok5-DW-cFe"/>
+                                                <constraint firstItem="zmD-Mi-aIa" firstAttribute="bottom" secondItem="06p-5K-WkF" secondAttribute="bottom" id="dc9-Sj-sr9"/>
                                                 <constraint firstItem="06p-5K-WkF" firstAttribute="bottom" secondItem="biW-RQ-5Wj" secondAttribute="bottom" constant="8" id="swH-7O-2ps"/>
                                                 <constraint firstItem="06p-5K-WkF" firstAttribute="trailing" secondItem="Q3o-1l-wTt" secondAttribute="trailing" id="tL5-Dw-3Bd"/>
                                             </constraints>
