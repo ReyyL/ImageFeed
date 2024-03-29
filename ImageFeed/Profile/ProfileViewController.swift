@@ -39,7 +39,7 @@ final class ProfileViewController: UIViewController {
         
         let loginLabel = UILabel()
         loginLabel.text = "@ekaterina_nov"
-        loginLabel.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+        loginLabel.textColor = UIColor(named: "YGray")
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         self.loginLabel = loginLabel
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +59,7 @@ final class ProfileViewController: UIViewController {
         let exitButton = UIButton.systemButton(with: exitButtonImage,
                                                target: self,
                                                action: #selector(didTapLogout))
-        exitButton.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1)
+        exitButton.tintColor = UIColor(named: "YRed")
         self.exitButton = exitButton
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(exitButton)
