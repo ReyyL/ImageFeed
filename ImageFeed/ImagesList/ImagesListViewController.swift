@@ -11,6 +11,7 @@ final class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)"}
     private let photoDate: Date = .init()
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     @IBOutlet private var tableView: UITableView!
     
@@ -26,6 +27,23 @@ final class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier { // 1
+            guard
+                let viewController = segue.destination as? SingleImageViewController, // 2
+                let indexPath = sender as? IndexPath // 3
+            else {
+                assertionFailure("Invalid segue destination") // 4
+                return
+            }
+            
+            let image = UIImage(named: photosName[indexPath.row]) // 5
+            viewController.image = image // 6
+        } else {
+            super.prepare(for: segue, sender: sender) // 7
+        }
+    }
 }
 
 extension ImagesListViewController: UITableViewDelegate {
@@ -54,22 +72,20 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imagesListCell, with: indexPath)
+        let imageFromArray = UIImage(named: photosName[indexPath.row])
+        let date = dateFormatter.string(from: Date())
+        let isLiked = indexPath.row % 2 == 0
+        
+        imagesListCell.configureCell(imageFromArray: imageFromArray, date: date, isLiked: isLiked)
         return imagesListCell
     }
 }
 
 extension ImagesListViewController {
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let imageFromArray = UIImage(named: photosName[indexPath.row]) else { return }
-        
-        cell.cellImage.image = imageFromArray
-       
-        cell.dateLabel.text = dateFormatter.string(from: photoDate)
-        
-        cell.likeButton.imageView?.image = indexPath.row % 2 == 0
-        ? UIImage(named: "like_button_on")
-        : UIImage(named: "like_button_off")
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
 }
 
