@@ -9,6 +9,8 @@ import UIKit
 
 final class AuthViewController: UIViewController {
     
+    private let oauth2Service = OAuth2Service.shared
+    
     private let authSegueIdentifier = "ShowWebView"
     
     override func viewDidLoad() {
@@ -59,7 +61,7 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
                                                            style: .plain,
-                                                           target: nil,
+                                                           target: self,
                                                            action: #selector(did))
         
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YBlack")
@@ -80,7 +82,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
-        print(423)
     }
 }
 
