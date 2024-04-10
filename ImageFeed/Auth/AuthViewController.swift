@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
     
     private let oauth2Service = OAuth2Service.shared
     
     private let authSegueIdentifier = "ShowWebView"
+    
+    weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,19 +63,14 @@ final class AuthViewController: UIViewController {
     
     private func configureBackButton() {
         
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Backward")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "BackwardWebView")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
                                                            style: .plain,
                                                            target: self,
-                                                           action: #selector(did))
+                                                           action: nil)
         
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YBlack")
-    }
-    
-    @objc
-    func did() {
-        print(1111)
     }
     
 }
@@ -77,10 +78,20 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-//        dismiss(animated: true) { [weak self] in
-//            guard let self = self else { return }
-//            fetchOAuthToken(code)
-//        }
+        
+        vc.dismiss(animated: true)
+        
+        oauth2Service.fetchOAuthToken(code: code) { [self] result in
+            switch result {
+            case .success:
+                delegate?.didAuthenticate(self)
+                
+            case .failure:
+                // TODO [Sprint 11]
+                break
+            }
+        }
+        
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {

@@ -10,11 +10,17 @@ import Foundation
 final class OAuth2Service {
     static let shared = OAuth2Service()
     
-    
+    private var authToken: String? {
+        get {
+            OAuth2TokenStorage().token
+            
+        }
+        set {
+            OAuth2TokenStorage().token = newValue
+        }
+    }
     
     private init() {}
-    
-    
     
     private func createOAuthRequest(code: String) -> URLRequest {
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")!
@@ -45,7 +51,7 @@ final class OAuth2Service {
             switch result {
             case .success(let body):
                 let authToken = body.accessToken
-//                self.authToken = authToken
+                self.authToken = authToken
                 completion(.success(authToken))
             case .failure(let error):
                 completion(.failure(error))
@@ -56,13 +62,14 @@ final class OAuth2Service {
     
     private func takeToken(
         for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
-            let decoder = JSONDecoder()
-            return URLSession.shared.data(for: request) { result in
-                let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                    Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-                }
-                completion(response)
+        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
+    ) -> URLSessionTask {
+        let decoder = JSONDecoder()
+        return URLSession.shared.data(for: request) { result in
+            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
+                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
             }
+            completion(response)
         }
+    }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TDM-fP-UJR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fBF-cX-3lS">
     <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -13,7 +13,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="wUG-rC-2gC">
             <objects>
-                <tabBarController id="hjN-fj-3mw" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="hjN-fj-3mw" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uUa-Wy-AaI">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -224,7 +224,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1nW-5x-aCb" userLabel="authButton">
-                                <rect key="frame" x="16" y="760" width="398" height="48"/>
+                                <rect key="frame" x="16" y="794" width="398" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="nvY-d7-y3v"/>
@@ -264,8 +264,9 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TDM-fP-UJR" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="vU1-R3-NcX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Y1T-9s-LmK">
-                        <rect key="frame" x="0.0" y="59" width="430" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -275,7 +276,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J9r-rc-MIi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1556" y="-1378"/>
+            <point key="canvasLocation" x="-1822" y="-1378"/>
         </scene>
         <!--Web View View Controller-->
         <scene sceneID="6zt-Ae-3yd">
@@ -286,7 +287,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AYu-Xx-nx6">
-                                <rect key="frame" x="0.0" y="103" width="430" height="795"/>
+                                <rect key="frame" x="0.0" y="44" width="430" height="888"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -294,7 +295,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W8c-cA-Pg2">
-                                <rect key="frame" x="0.0" y="103" width="430" height="4"/>
+                                <rect key="frame" x="0.0" y="44" width="430" height="4"/>
                                 <color key="progressTintColor" name="YBlack"/>
                             </progressView>
                         </subviews>
@@ -318,7 +319,34 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hn9-BS-A5o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="441" y="-1363"/>
+            <point key="canvasLocation" x="440" y="-1378"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="JQ5-bU-VgM">
+            <objects>
+                <viewController id="fBF-cX-3lS" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LOY-SU-rOh">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="u43-6C-dXS">
+                                <rect key="frame" x="170.66666666666666" y="417.66666666666663" width="73" height="75.666666666666657"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="njC-Ww-m1r"/>
+                        <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="u43-6C-dXS" firstAttribute="centerX" secondItem="njC-Ww-m1r" secondAttribute="centerX" id="bCE-C5-PJ3"/>
+                            <constraint firstItem="u43-6C-dXS" firstAttribute="centerY" secondItem="njC-Ww-m1r" secondAttribute="centerY" id="cnW-g2-t2G"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="TDM-fP-UJR" kind="presentation" identifier="SplashView" modalPresentationStyle="fullScreen" id="jV2-cK-bsx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9cp-dU-OCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2851" y="-954"/>
         </scene>
     </scenes>
     <resources>
@@ -327,6 +355,7 @@
         <image name="ActiveProfile" width="30" height="30"/>
         <image name="Backward" width="24" height="24"/>
         <image name="Sharing" width="51" height="51"/>
+        <image name="Vector" width="75" height="78"/>
         <image name="like_button_off" width="42" height="42"/>
         <namedColor name="YBlack">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
