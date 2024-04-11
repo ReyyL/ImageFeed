@@ -28,7 +28,7 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == authSegueIdentifier { // 1
+        if segue.identifier == authSegueIdentifier {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
             else {
@@ -37,7 +37,7 @@ final class AuthViewController: UIViewController {
             
             webViewViewController.delegate = self
         } else {
-            super.prepare(for: segue, sender: sender) // 7
+            super.prepare(for: segue, sender: sender)
         }
     }
     
@@ -67,7 +67,7 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
                                                            style: .plain,
-                                                           target: self,
+                                                           target: nil,
                                                            action: nil)
         
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YBlack")
