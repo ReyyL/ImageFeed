@@ -11,12 +11,12 @@ final class SplashViewController: UIViewController {
     
     private let oauthTokenStorage = OAuth2TokenStorage()
     
-    private let splashViewIdentifier = "SplashView"
+    private let splashViewIdentifier = "SplashViewSegueIdentifier"
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
-        if let token = oauthTokenStorage.token {
+        if oauthTokenStorage.token != nil {
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: splashViewIdentifier, sender: nil)

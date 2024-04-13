@@ -241,7 +241,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="rwz-Xg-QQl" kind="show" identifier="ShowWebView" id="BeN-Ym-nE4"/>
+                                    <segue destination="rwz-Xg-QQl" kind="show" identifier="ShowWebViewSegueIdentifier" id="BeN-Ym-nE4"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -341,7 +341,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="TDM-fP-UJR" kind="presentation" identifier="SplashView" modalPresentationStyle="fullScreen" id="jV2-cK-bsx"/>
+                        <segue destination="TDM-fP-UJR" kind="presentation" identifier="SplashViewSegueIdentifier" modalPresentationStyle="fullScreen" id="jV2-cK-bsx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9cp-dU-OCE" userLabel="First Responder" sceneMemberID="firstResponder"/>

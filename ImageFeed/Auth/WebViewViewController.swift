@@ -54,7 +54,7 @@ final class WebViewViewController: UIViewController {
     
     private func loadAuthView() {
         
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else { return }
+        guard var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString) else { return }
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
@@ -115,9 +115,5 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
     }
-}
-
-enum WebViewConstants {
-    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 }
 

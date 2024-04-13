@@ -15,7 +15,7 @@ final class AuthViewController: UIViewController {
     
     private let oauth2Service = OAuth2Service.shared
     
-    private let authSegueIdentifier = "ShowWebView"
+    private let authSegueIdentifier = "ShowWebViewSegueIdentifier"
     
     weak var delegate: AuthViewControllerDelegate?
     
