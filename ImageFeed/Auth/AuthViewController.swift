@@ -79,7 +79,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         vc.dismiss(animated: true)
         UIBlockingProgressHUD.show()
         
-        OAuth2Service.shared.fetchOAuthToken(code: "code") { [self] result in
+        OAuth2Service.shared.fetchOAuthToken(code: code) { [self] result in
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
