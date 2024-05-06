@@ -47,7 +47,9 @@ final class ProfileImageService {
         
         var request = URLRequest(url: url)
         
-        guard let token = KeychainWrapper.standard.string(forKey: "Auth token")  else { return }
+        guard let token = OAuth2TokenStorage().token
+        
+        else { return }
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.objectTask(for: request) {

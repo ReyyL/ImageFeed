@@ -19,6 +19,8 @@ final class ProfileService {
     
     private(set) var profile: Profile?
     
+    private init() {}
+    
     func createProfileRequest() -> URLRequest? {
         
         if task != nil {

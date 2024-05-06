@@ -45,18 +45,14 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
-        print(url)
-//        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-//        let placeholder = UIImage(systemName: "person.crop.circle.fill")
-//        placeholder?.withTintColor(.gray)
-        
-//        profileImage?.backgroundColor = .yBlack
         profileImage?.kf.setImage(with: url)
         
     }
     
     private func updateProfileDetails(profile: Profile) {
         DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
             self.nameLabel.text = profile.name
             self.loginLabel?.text = profile.loginName
             self.profileDescription?.text = profile.bio
@@ -143,7 +139,7 @@ final class ProfileViewController: UIViewController {
         profileImage?.image = UIImage(systemName: "person.crop.circle.fill")
         profileImage?.tintColor = .gray
         exitButton?.isHidden = true
-        KeychainWrapper.standard.removeObject(forKey: "Auth token")
+        OAuth2TokenStorage().removeToken()
     }
     
     private func deleteLabel(_ label: inout UILabel?) {

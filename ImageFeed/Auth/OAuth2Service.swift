@@ -19,7 +19,12 @@ final class OAuth2Service {
     
     private var task: URLSessionTask?
     private var lastCode: String?
-
+    
+    private var authToken: String? {
+        get { OAuth2TokenStorage().token }
+        set { OAuth2TokenStorage().token = newValue }
+    }
+    
     private init() {}
     
     private func createOAuthRequest(code: String) -> URLRequest? {
@@ -67,7 +72,8 @@ final class OAuth2Service {
             switch result {
             case .success(let body):
                 let authToken = body.accessToken
-                KeychainWrapper.standard.set(authToken, forKey: "Auth token")
+                
+                self.authToken = authToken
                 completion(.success(authToken))
             case .failure(let error):
                 completion(.failure(error))
