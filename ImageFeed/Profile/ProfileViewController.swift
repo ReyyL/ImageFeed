@@ -61,6 +61,8 @@ final class ProfileViewController: UIViewController {
     
     private func createProfileUI() {
         
+        view.backgroundColor = .yBlack
+
         let profileImage = UIImageView()
         profileImage.image = UIImage(named: "Photo")
         self.profileImage = profileImage
