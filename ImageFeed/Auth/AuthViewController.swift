@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ProgressHUD
+import SwiftKeychainWrapper
 
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController)
@@ -58,7 +60,6 @@ final class AuthViewController: UIViewController {
             authImage.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
         ])
-        
     }
     
     private func configureBackButton() {
@@ -72,31 +73,43 @@ final class AuthViewController: UIViewController {
         
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YBlack")
     }
-    
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        
+    
         vc.dismiss(animated: true)
+        UIBlockingProgressHUD.show()
         
         oauth2Service.fetchOAuthToken(code: code) { [self] result in
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
-                delegate?.didAuthenticate(self)
                 
-            case .failure:
-                // TODO [Sprint 11]
-                break
+                self.delegate?.didAuthenticate(self)
+                
+            case .failure(let error):
+                
+                showAlert()
+                print("Ошибка при получении токена: \(error.localizedDescription)")
+                
             }
         }
-        
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
+            alertController.dismiss(animated: true)
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
 }
+
 
 

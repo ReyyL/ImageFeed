@@ -6,27 +6,69 @@
 //
 
 import UIKit
+import Kingfisher
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     
-    private var nameLabel: UILabel?
+    private var nameLabel = UILabel()
     private var loginLabel: UILabel?
     private var profileDescription: UILabel?
     private var profileImage: UIImageView?
     private var exitButton: UIButton?
     
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         createProfileUI()
+        guard let profile = ProfileService.shared.profile else { return }
+        updateProfileDetails(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+        
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        profileImage?.kf.setImage(with: url)
+        
+    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+            self.nameLabel.text = profile.name
+            self.loginLabel?.text = profile.loginName
+            self.profileDescription?.text = profile.bio
+        }
     }
     
     private func createProfileUI() {
         
+        view.backgroundColor = .yBlack
+
         let profileImage = UIImageView()
         profileImage.image = UIImage(named: "Photo")
         self.profileImage = profileImage
+        profileImage.layer.cornerRadius = 35
         profileImage.translatesAutoresizingMaskIntoConstraints = false
+        profileImage.clipsToBounds = true
         view.addSubview(profileImage)
         
         let nameLabel = UILabel()
@@ -94,12 +136,12 @@ final class ProfileViewController: UIViewController {
     
     @objc func didTapLogout(_ sender: Any) {
         
-        deleteLabel(&nameLabel)
         deleteLabel(&loginLabel)
         deleteLabel(&profileDescription)
         profileImage?.image = UIImage(systemName: "person.crop.circle.fill")
         profileImage?.tintColor = .gray
         exitButton?.isHidden = true
+        OAuth2TokenStorage().removeToken()
     }
     
     private func deleteLabel(_ label: inout UILabel?) {
