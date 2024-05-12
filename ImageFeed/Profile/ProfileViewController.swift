@@ -136,17 +136,24 @@ final class ProfileViewController: UIViewController {
     
     @objc func didTapLogout(_ sender: Any) {
         
-        deleteLabel(&loginLabel)
-        deleteLabel(&profileDescription)
-        profileImage?.image = UIImage(systemName: "person.crop.circle.fill")
-        profileImage?.tintColor = .gray
-        exitButton?.isHidden = true
-        OAuth2TokenStorage().removeToken()
+        ProfileLogoutService.shared.logout()
+        switchToSplashController()
     }
     
     private func deleteLabel(_ label: inout UILabel?) {
         label?.removeFromSuperview()
         label = nil
+    }
+    
+    private func switchToSplashController() {
+        
+        DispatchQueue.main.async {
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid window configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+        }
     }
     
 }
