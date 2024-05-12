@@ -135,9 +135,7 @@ final class ProfileViewController: UIViewController {
     
     
     @objc func didTapLogout(_ sender: Any) {
-        
-        ProfileLogoutService.shared.logout()
-        switchToSplashController()
+        showAlert()
     }
     
     private func deleteLabel(_ label: inout UILabel?) {
@@ -154,6 +152,21 @@ final class ProfileViewController: UIViewController {
             }
             window.rootViewController = SplashViewController()
         }
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Да", style: .default) { _ in
+            
+            ProfileLogoutService.shared.logout()
+            self.switchToSplashController()
+        }
+        let secondAction = UIAlertAction(title: "Нет", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+        alert.addAction(action)
+        alert.addAction(secondAction)
+        present(alert, animated: true)
     }
     
 }
