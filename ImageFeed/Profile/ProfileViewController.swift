@@ -40,10 +40,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else { return }
         
         profileImage?.kf.setImage(with: url)
         
@@ -62,7 +60,7 @@ final class ProfileViewController: UIViewController {
     private func createProfileUI() {
         
         view.backgroundColor = .yBlack
-
+        
         let profileImage = UIImageView()
         profileImage.image = UIImage(named: "Photo")
         self.profileImage = profileImage
@@ -135,18 +133,38 @@ final class ProfileViewController: UIViewController {
     
     
     @objc func didTapLogout(_ sender: Any) {
-        
-        deleteLabel(&loginLabel)
-        deleteLabel(&profileDescription)
-        profileImage?.image = UIImage(systemName: "person.crop.circle.fill")
-        profileImage?.tintColor = .gray
-        exitButton?.isHidden = true
-        OAuth2TokenStorage().removeToken()
+        showAlert()
     }
     
     private func deleteLabel(_ label: inout UILabel?) {
         label?.removeFromSuperview()
         label = nil
+    }
+    
+    private func switchToSplashController() {
+        
+        DispatchQueue.main.async {
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid window configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+        }
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Да", style: .default) { _ in
+            
+            ProfileLogoutService.shared.logout()
+            self.switchToSplashController()
+        }
+        let secondAction = UIAlertAction(title: "Нет", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+        alert.addAction(action)
+        alert.addAction(secondAction)
+        present(alert, animated: true)
     }
     
 }

@@ -47,9 +47,8 @@ final class ProfileImageService {
         
         var request = URLRequest(url: url)
         
-        guard let token = OAuth2TokenStorage().token
+        guard let token = OAuth2TokenStorage().token else { return }
         
-        else { return }
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.objectTask(for: request) {

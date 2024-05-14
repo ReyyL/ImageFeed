@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
+    
+    weak var delegate: ImagesListCellDelegate?
     
     @IBOutlet private weak var likeButton: UIButton!
     
@@ -17,14 +23,50 @@ final class ImagesListCell: UITableViewCell {
     
     @IBOutlet private weak var cellImage: UIImageView!
     
-    func configureCell(imageFromArray: UIImage?, date: String, isLiked: Bool) {
+    @IBAction private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        cellImage.image = imageFromArray
+        cellImage.kf.cancelDownloadTask()
+    }
+    
+    func setIsLiked(_ isLiked: Bool) {
+        let isLiked = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
         
-        dateLabel.text = date
+        likeButton.setImage(isLiked, for: .normal)
+    }
+    
+    func loadCell(from photo: Photo) {
         
-        likeButton.imageView?.image = isLiked
-        ? UIImage(named: "like_button_on")
-        : UIImage(named: "like_button_off")
+        DispatchQueue.main.async { [weak self] in
+            
+            guard let self else { return }
+            
+            guard let data = photo.createdAt,
+                  let photoURL = URL(string: photo.largeImageURL) else { return }
+            
+            let date = dateFormatter.string(from: data)
+            
+            setIsLiked(photo.isLiked)
+            
+            self.cellImage.kf.indicatorType = .activity
+            
+            self.cellImage.kf.setImage(with: photoURL,
+                                       placeholder: UIImage(named: "photoPlaceholder")) { _ in }
+            
+            self.dateLabel.text = date
+        }
+        
+        
     }
 }
