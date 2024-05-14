@@ -40,10 +40,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: profileImageURL) else { return }
         
         profileImage?.kf.setImage(with: url)
         
@@ -62,7 +60,7 @@ final class ProfileViewController: UIViewController {
     private func createProfileUI() {
         
         view.backgroundColor = .yBlack
-
+        
         let profileImage = UIImageView()
         profileImage.image = UIImage(named: "Photo")
         self.profileImage = profileImage

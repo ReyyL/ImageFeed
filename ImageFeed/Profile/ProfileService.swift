@@ -44,8 +44,7 @@ final class ProfileService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        guard var request = createProfileRequest()
-        else {
+        guard var request = createProfileRequest() else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }

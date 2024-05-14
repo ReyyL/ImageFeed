@@ -90,7 +90,7 @@ final class ImagesListService {
     private func imagesListRequest() -> URLRequest? {
         
         if task != nil {
-            task?.cancel()
+            return nil
         }
         
         let nextPage = (lastLoadedPage ?? 0) + 1
@@ -117,14 +117,10 @@ final class ImagesListService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        guard var request = imagesListRequest()
-        else {
-            preconditionFailure("Invalid Request")
-        }
+        guard var request = imagesListRequest() else { preconditionFailure("Invalid Request") }
         
-        guard let token = OAuth2TokenStorage().token
-                
-        else { return }
+        guard let token = OAuth2TokenStorage().token else { return }
+        
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let task = urlSession.objectTask(for: request) {
@@ -134,19 +130,20 @@ final class ImagesListService {
             
             switch result {
             case .success(let result):
-                
-                result.map { photoResult in
-                    let nextPhoto = Photo(photoResult: photoResult)
+                DispatchQueue.main.async {
+                    result.map { photoResult in
+                        let nextPhoto = Photo(photoResult: photoResult)
+                        return nextPhoto
+                        
+                    }.forEach { photo in
+                        self.photos.append(photo)
+                    }
                     
-                    return nextPhoto
+                    NotificationCenter.default
+                        .post(name: ImagesListService.didChangeNotification,
+                              object: self)
                     
-                }.forEach { photo in
-                    self.photos.append(photo)
                 }
-                
-                NotificationCenter.default
-                    .post(name: ImagesListService.didChangeNotification,
-                          object: self)
                 
                 self.task = nil
                 
@@ -177,9 +174,8 @@ final class ImagesListService {
         
         request.httpMethod = isLike ? "POST" : "DELETE"
         
-        guard let token = OAuth2TokenStorage().token
-                
-        else { return }
+        guard let token = OAuth2TokenStorage().token else { return }
+        
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let task = urlSession.objectTask(for: request) {
@@ -189,7 +185,6 @@ final class ImagesListService {
             
             switch result {
             case .success(let responce):
-                print("Ответ: \(responce)")
                 
                 let isLiked = responce.photo.likedByUser
                 

@@ -45,27 +45,25 @@ final class ImagesListViewController: UIViewController {
     }()
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            guard
-                let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
-            else {
-                assertionFailure("Invalid segue destination")
-                return
-            }
-            
-            viewController.fullImageUrl = URL(string: photos[indexPath.row].fullImageURL)
-            
-        } else {
+        guard segue.identifier == showSingleImageSegueIdentifier else {
             super.prepare(for: segue, sender: sender)
+            return
         }
+        
+        guard let viewController = segue.destination as? SingleImageViewController,
+              let indexPath = sender as? IndexPath else {
+            assertionFailure("Invalid segue destination")
+            return
+        }
+        
+        viewController.fullImageUrl = URL(string: photos[indexPath.row].fullImageURL)
     }
 }
 
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       
+        
         let photoSize = photos[indexPath.row].size
         
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
@@ -140,11 +138,14 @@ extension ImagesListViewController {
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
+        
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        ImagesListService.shared.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+        ImagesListService.shared.changeLike(photoId: photo.id, isLike: !photo.isLiked) {
+            [weak self] result in
             
             guard let self else { return }
+            
             switch result {
             case .success(let isLiked):
                 self.photos[indexPath.row].isLiked = isLiked
