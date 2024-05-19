@@ -33,7 +33,7 @@ struct likedPhotoResult: Decodable {
     let likedByUser: Bool
 }
 
-struct Photo {
+public struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
