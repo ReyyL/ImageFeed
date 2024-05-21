@@ -187,6 +187,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3Ed-lV-ilb"/>
+                    <connections>
+                        <outlet property="loginButton" destination="1nW-5x-aCb" id="Wav-C5-iCg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8WT-0z-cxc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

@@ -33,6 +33,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
+        setUpAccessibility()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,6 +74,10 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     
     func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
+    }
+    
+    private func setUpAccessibility() {
+        webView.accessibilityIdentifier = "UnsplashWebView"
     }
 }
 
