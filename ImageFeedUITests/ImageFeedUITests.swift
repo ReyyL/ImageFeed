@@ -32,13 +32,13 @@ final class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(webView.waitForExistence(timeout: 3))
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 3))
         loginTextField.tap()
-        loginTextField.typeText("lazarev01@list.ru")
+        loginTextField.typeText("email")
         
         keyboardDone.tap() //по swipeUp и тапу на вебвью клавиатура не скрывалась
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 3))
         
         passwordTextField.tap()
-        passwordTextField.typeText("_Galaxy555000")
+        passwordTextField.typeText("pass")
         
         webLoginButton.tap()
         
@@ -85,8 +85,8 @@ final class ImageFeedUITests: XCTestCase {
         
         let profileTabButton = app.tabBars.buttons.element(boundBy: 1)
         let alertOkButton = app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"]
-        let profileName = app.staticTexts["Andrew Lazarev"]
-        let profileLogin = app.staticTexts["@reyyyyl"]
+        let profileName = app.staticTexts["name"]
+        let profileLogin = app.staticTexts["login"]
         let loginButton = app.buttons["Authenticate"]
         let logoutButton = app.buttons["ipad.and.arrow.forward"]
         
