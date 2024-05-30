@@ -33,7 +33,7 @@ struct likedPhotoResult: Decodable {
     let likedByUser: Bool
 }
 
-struct Photo {
+public struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -87,37 +87,29 @@ final class ImagesListService {
     
     private let urlSession = URLSession.shared
     
-    private func imagesListRequest() -> URLRequest? {
+    func fetchPhotosNextPage() {
         
-        if task != nil {
-            return nil
-        }
+        assert(Thread.isMainThread)
+        
+        guard task == nil else { return }
+        
+        task?.cancel()
         
         let nextPage = (lastLoadedPage ?? 0) + 1
         
         let path = "/photos?page=\(nextPage)"
         guard let url = URL(string: path, relativeTo: Constants.defaultBaseURL) else {
             assertionFailure("Ошибка создании URL")
-            return nil
+            return
         }
         
-        let request = URLRequest(url: url)
+        var request = URLRequest(url: url)
         
         if let currentPage = lastLoadedPage {
             self.lastLoadedPage = currentPage + 1
         } else {
             self.lastLoadedPage = 1
         }
-        
-        return request
-    }
-    
-    func fetchPhotosNextPage() {
-        
-        assert(Thread.isMainThread)
-        task?.cancel()
-        
-        guard var request = imagesListRequest() else { preconditionFailure("Invalid Request") }
         
         guard let token = OAuth2TokenStorage().token else { return }
         

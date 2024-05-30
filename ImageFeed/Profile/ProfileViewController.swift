@@ -9,7 +9,16 @@ import UIKit
 import Kingfisher
 import SwiftKeychainWrapper
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar()
+    func switchToSplashController()
+    func updateProfileDetails(profile: Profile?)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    
+    var presenter: ProfilePresenterProtocol?
     
     private var nameLabel = UILabel()
     private var loginLabel: UILabel?
@@ -23,9 +32,15 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         createProfileUI()
-        guard let profile = ProfileService.shared.profile else { return }
-        updateProfileDetails(profile: profile)
+//        presenter = ProfilePresenter(view: self)
+        presenter?.viewDidLoad()
+        addObserver()
+        updateAvatar()
         
+        self.view.accessibilityIdentifier = "ProfileViewController"
+    }
+    
+    func addObserver() {
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -35,22 +50,20 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-        updateAvatar()
-        
     }
     
-    private func updateAvatar() {
-        guard let profileImageURL = ProfileImageService.shared.avatarURL,
-              let url = URL(string: profileImageURL) else { return }
-        
-        profileImage?.kf.setImage(with: url)
-        
+    func updateAvatar() {
+        presenter?.updateAvatar(profileImage: profileImage)
     }
     
-    private func updateProfileDetails(profile: Profile) {
+    func switchToSplashController() {
+        presenter?.switchToSplashController()
+    }
+    
+    func updateProfileDetails(profile: Profile?) {
         DispatchQueue.main.async {
             [weak self] in
-            guard let self = self else { return }
+            guard let self = self, let profile else { return }
             self.nameLabel.text = profile.name
             self.loginLabel?.text = profile.loginName
             self.profileDescription?.text = profile.bio
@@ -62,7 +75,6 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .yBlack
         
         let profileImage = UIImageView()
-        profileImage.image = UIImage(named: "Photo")
         self.profileImage = profileImage
         profileImage.layer.cornerRadius = 35
         profileImage.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +82,6 @@ final class ProfileViewController: UIViewController {
         view.addSubview(profileImage)
         
         let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         nameLabel.textColor = .white
         self.nameLabel = nameLabel
@@ -78,7 +89,6 @@ final class ProfileViewController: UIViewController {
         view.addSubview(nameLabel)
         
         let loginLabel = UILabel()
-        loginLabel.text = "@ekaterina_nov"
         loginLabel.textColor = UIColor(named: "YGray")
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         self.loginLabel = loginLabel
@@ -86,7 +96,6 @@ final class ProfileViewController: UIViewController {
         view.addSubview(loginLabel)
         
         let profileDescription = UILabel()
-        profileDescription.text = "Hello, World!"
         profileDescription.font = UIFont.systemFont(ofSize: 13)
         profileDescription.textColor = .white
         self.profileDescription = profileDescription
@@ -98,7 +107,7 @@ final class ProfileViewController: UIViewController {
         guard let exitButtonImage else { return }
         let exitButton = UIButton.systemButton(with: exitButtonImage,
                                                target: self,
-                                               action: #selector(didTapLogout))
+                                               action: #selector(showAlert))
         exitButton.tintColor = UIColor(named: "YRed")
         self.exitButton = exitButton
         exitButton.translatesAutoresizingMaskIntoConstraints = false
@@ -128,31 +137,9 @@ final class ProfileViewController: UIViewController {
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                  constant: -24)
         ])
-        
     }
     
-    
-    @objc func didTapLogout(_ sender: Any) {
-        showAlert()
-    }
-    
-    private func deleteLabel(_ label: inout UILabel?) {
-        label?.removeFromSuperview()
-        label = nil
-    }
-    
-    private func switchToSplashController() {
-        
-        DispatchQueue.main.async {
-            guard let window = UIApplication.shared.windows.first else {
-                assertionFailure("Invalid window configuration")
-                return
-            }
-            window.rootViewController = SplashViewController()
-        }
-    }
-    
-    private func showAlert() {
+    @objc private func showAlert() {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
         let action = UIAlertAction(title: "Да", style: .default) { _ in
             

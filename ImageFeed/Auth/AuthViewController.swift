@@ -19,6 +19,8 @@ final class AuthViewController: UIViewController {
     
     private let authSegueIdentifier = "ShowWebViewSegueIdentifier"
     
+    @IBOutlet var loginButton: UIButton!
+    
     weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -26,7 +28,7 @@ final class AuthViewController: UIViewController {
         
         createAuthScreen()
         configureBackButton()
-        
+        setUpAccessibility()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -37,6 +39,10 @@ final class AuthViewController: UIViewController {
                 fatalError("Failed to prepare for \(authSegueIdentifier)")
             }
             
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter  
+            webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -72,6 +78,10 @@ final class AuthViewController: UIViewController {
                                                            action: nil)
         
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YBlack")
+    }
+    
+    private func setUpAccessibility() {
+        loginButton.accessibilityIdentifier = "Authenticate"
     }
 }
 

@@ -2,7 +2,7 @@
 //  ImageFeedUITestsLaunchTests.swift
 //  ImageFeedUITests
 //
-//  Created by Andrey Lazarev on 02.03.2024.
+//  Created by Andrey Lazarev on 20.05.2024.
 //
 
 import XCTest
